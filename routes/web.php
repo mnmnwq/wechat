@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/send_email','mailController@send_email');
+Route::get('/send_email','MailController@send_email');
