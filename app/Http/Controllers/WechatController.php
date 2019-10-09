@@ -27,7 +27,7 @@ class WechatController extends Controller
         }else{
             //取不到，调接口，缓存
             $re = file_get_contents('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WECHAT_APPID').'&secret='.env('WECHAT_SECRET'));
-            $result = json_decode($re,1);
+            $result = json_decode($re,true);
             Cache::put($key,$result['access_token'],$result['expires_in']);
             $wechat_access_token = $result['access_token'];
         }
