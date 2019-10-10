@@ -15,4 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login',function(){
+    return view('login');
+});
+
+Route::get('/wechat/login','LoginController@wechat_login');
+Route::get('/wechat/code','LoginController@wechat_code');
 Route::get('/wechat/index','WechatController@index');
