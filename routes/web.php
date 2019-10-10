@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    dd(session());
     return view('welcome');
 });
 
