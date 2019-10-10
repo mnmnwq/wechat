@@ -14,6 +14,14 @@ class WechatController extends Controller
        echo $access_token;
     }
 
+    public function get_wechat_user($openid)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->get_access_token().'&openid='.$openid.'&lang=zh_CN';
+        $re = file_get_contents($url);
+        $result = json_decode($re,1);
+        return $result;
+    }
+
     /**
      * 获取微信access_token
      */
