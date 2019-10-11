@@ -9,6 +9,12 @@ use DB;
 
 class LoginController extends Controller
 {
+
+    public function post_test(Request $request)
+    {
+        dd($request->all());
+    }
+
     public function wechat_login()
     {
         $redirect_uri = urlencode(env('APP_URL').'/wechat/code');
@@ -33,7 +39,7 @@ class LoginController extends Controller
             $request->session()->put('uid',$user_wechat->uid);
         }else{
             // 注册
-            DB::connection('mysql')->beginTransaction();
+            DB::connection('mysql')->beginTransaction(); //开启事务
             $uid= User::insertGetId([
                 'name'=>rand(1000,9999).time(),
                 'password'=>'',
@@ -48,6 +54,7 @@ class LoginController extends Controller
                 $request->session()->put('uid',$uid);
                 DB::connection('mysql')->commit();
             }else{
+                DB::connection('mysql')->rollback();
                 dd('添加信息错误');
             }
         }

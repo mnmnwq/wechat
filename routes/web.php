@@ -23,3 +23,4 @@ Route::get('/login',function(){
 Route::get('/wechat/login','LoginController@wechat_login');
 Route::get('/wechat/code','LoginController@wechat_code');
 Route::get('/wechat/index','WechatController@index');
+Route::post('/post/test','LoginController@post_test');
