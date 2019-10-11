@@ -6,6 +6,7 @@
  * Time: 19:54
  */
 namespace App\Tools;
+use Illuminate\Support\Facades\Cache;
 class Tools {
     /**
      * 根据openid获取用户的基本新
