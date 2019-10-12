@@ -21,7 +21,7 @@ class TagController extends AdminController
     }
     public function add_tag()
     {
-        echo 22222;
+        return view();
     }
 
     public function del_tag(Request $request)
