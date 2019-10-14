@@ -27,8 +27,11 @@ Route::post('/post/test','LoginController@post_test');
 
 //标签管理
 Route::get('/wechat/tag_list','TagController@tag_list');
+Route::get('/wechat/user_tag','TagController@user_tag');//粉丝身上标签
 Route::get('/wechat/add_tag','TagController@add_tag');
+Route::post('/wechat/add_user_tag','TagController@add_user_tag'); //给用户打标签
 Route::post('/wechat/do_add_tag','TagController@do_add_tag');
 Route::get('/wechat/update_tag','TagController@update_tag');
 Route::post('/wechat/do_update_tag','TagController@do_update_tag');
 Route::get('/wechat/del_tag','TagController@del_tag');
+Route::get('/wechat/wechat_user','WechatController@wechat_user');

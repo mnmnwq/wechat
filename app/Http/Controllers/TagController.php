@@ -15,6 +15,41 @@ class TagController extends Controller
         $this->request = $request;
     }
 
+    /**
+     * 用户身上标签
+     */
+    public function user_tag()
+    {
+        $req = $this->request->all();
+        $url = 'https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token='.$this->tools->get_access_token();
+        $data = [
+            'openid'=>$req['openid']
+        ];
+        $re = $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+        $result = json_decode($re,1);
+        $tag_list = $this->tools->tag_list()['tags'];
+        foreach($result['tagid_list'] as $v){
+            foreach($tag_list as $vo){
+                if($v == $vo['id']){
+                    echo $vo['name']."<br>";
+                }
+            }
+        }
+    }
+
+    public function add_user_tag()
+    {
+        $req = $this->request->all();
+        $url = 'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token='.$this->tools->get_access_token();
+        $data = [
+            'tagid'=>$req['tag_id'],
+            'openid_list'=>$req['opneid_list']
+        ];
+        $re = $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+        $result = json_decode($re,1);
+        dd($result);
+    }
+
     public function del_tag()
     {
         $req = $this->request->all();
@@ -75,9 +110,7 @@ class TagController extends Controller
     public function tag_list()
     {
         //公众号标签列表
-        $url = 'https://api.weixin.qq.com/cgi-bin/tags/get?access_token='.$this->tools->get_access_token();
-        $re = $this->tools->curl_get($url);
-        $result = json_decode($re,1);
+        $result = $this->tools->tag_list();
         return view('Tag.tagList',['data'=>$result['tags']]);
     }
 }

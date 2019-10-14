@@ -9,6 +9,18 @@ namespace App\Tools;
 use Illuminate\Support\Facades\Cache;
 class Tools {
     /**
+     * 公众号标签列表
+     * @return mixed
+     */
+    public function tag_list()
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/tags/get?access_token='.$this->get_access_token();
+        $re = $this->curl_get($url);
+        $result = json_decode($re,1);
+        return $result;
+    }
+
+    /**
      * 根据openid获取用户的基本新
      * @param $openid
      * @return mixed
