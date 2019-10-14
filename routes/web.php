@@ -20,14 +20,20 @@ Route::get('/login',function(){
     return view('login');
 });
 
+Route::any('/wechat/event','EventController@event');
+
 Route::get('/wechat/login','LoginController@wechat_login');
 Route::get('/wechat/code','LoginController@wechat_code');
 Route::get('/wechat/index','WechatController@index');
 Route::post('/post/test','LoginController@post_test');
 
+//模板消息
+Route::get('/wechat/push_template_msg','WechatController@push_template_msg'); //推送模板消息
+
 //标签管理
 Route::get('/wechat/tag_list','TagController@tag_list');
 Route::get('/wechat/user_tag','TagController@user_tag');//粉丝身上标签
+Route::get('/wechat/push_tag_msg','TagController@push_tag_msg');
 Route::get('/wechat/add_tag','TagController@add_tag');
 Route::post('/wechat/add_user_tag','TagController@add_user_tag'); //给用户打标签
 Route::post('/wechat/do_add_tag','TagController@do_add_tag');

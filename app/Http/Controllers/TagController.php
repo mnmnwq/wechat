@@ -15,6 +15,25 @@ class TagController extends Controller
         $this->request = $request;
     }
 
+    public function push_tag_msg()
+    {
+        $req = $this->request->all();
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token='.$this->tools->get_access_token();
+        $data = [
+            'filter'=> [
+                "is_to_all"=>false,
+                "tag_id"=>$req['tag_id']
+            ],
+            'text'=>[
+                'content'=>'1111111111111111'
+            ],
+            'msgtype'=>'text'
+        ];
+        $re = $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+        $result = json_decode($re,1);
+        dd($result);
+    }
+
     /**
      * 用户身上标签
      */
