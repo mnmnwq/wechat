@@ -23,6 +23,8 @@ Route::get('/login',function(){
 Route::get('/wechat/upload','ResourceController@upload');
 Route::post('/wechat/do_upload','ResourceController@do_upload');
 
+Route::get('/wechat/source_list','ResourceController@source_list');
+
 Route::any('/wechat/event','EventController@event');
 
 Route::get('/wechat/login','LoginController@wechat_login');

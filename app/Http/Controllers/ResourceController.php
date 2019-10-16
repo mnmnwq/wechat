@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Tools\Tools;
+use App\Model\Resource;
 
 class ResourceController extends Controller
 {
@@ -19,9 +20,23 @@ class ResourceController extends Controller
         return view('Resource.upload');
     }
 
+    public function source_list()
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token='.$this->tools->get_access_token();
+        $data = [
+            'type'=>'image',
+            'offset'=>'0',
+            'count'=>20
+        ];
+        $re = $this->tools->curl_post($url,json_encode($data,JSON_UNESCAPED_UNICODE));
+        $result = json_decode($re,1);
+        dd($result);
+    }
+
     public function do_upload()
     {
         $req = $this->request->all();
+        $type_arr = ['image'=>1,'voice'=>2,'video'=>3,'thumb'=>4];
         if(!$this->request->hasFile('rsource')){
             dd('没有文件');
         }
@@ -29,9 +44,25 @@ class ResourceController extends Controller
         $file_ext = $file_obj->getClientOriginalExtension();
         $file_name = time().rand(1000,9999).'.'.$file_ext;
         $path = $this->request->file('rsource')->storeAs('wechat/'.$req['type'],$file_name);
-        $url = 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token='.$this->tools->get_access_token().'&type='.$req['type'];
-        $re = $this->tools->wechat_curl_file($url,storage_path('app/public/'.$path));
+        $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$this->tools->get_access_token().'&type='.$req['type'];
+        $data = [
+            'media'=>new \CURLFile(storage_path('app/public/'.$path)),
+        ];
+        if($req['type'] == 'video'){
+            $data['description'] = [
+                'title'=>'标题',
+                'introduction'=>'描述'
+            ];
+        }
+        $re = $this->tools->wechat_curl_file($url,$data);
         $result = json_decode($re,1);
-        dd($result);
+        if(!isset($result['errcode'])){
+            Resource::insert([
+                'media_id'=>$result['media_id'],
+                'type'=>$type_arr[$req['type']],
+                'path'=>'/storage/'.$path,
+                'addtime'=>time()
+            ]);
+        }
     }
 }
