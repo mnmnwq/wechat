@@ -21,7 +21,7 @@ class Tools {
     }
 
     /**
-     * 根据openid获取用户的基本新
+     * 根据openid获取用户的基本信息
      * @param $openid
      * @return mixed
      */
@@ -52,6 +52,31 @@ class Tools {
             $wechat_access_token = $result['access_token'];
         }
         return $wechat_access_token;
+    }
+
+    /**
+     * 微信上传素材专用
+     * post
+     * @param $url
+     * @param $path
+     * @return bool|string
+     */
+    public function wechat_curl_file($url,$path)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,false);
+
+        curl_setopt($curl,CURLOPT_POST,true);
+        $data = [
+            'meida'=>new \CURLFile(realpath($path)),
+        ];
+        curl_setopt($curl,CURLOPT_POSTFIELDS,$data);
+        $result = curl_exec($curl);
+
+        curl_close($curl);
+        return $result;
     }
 
     /**
