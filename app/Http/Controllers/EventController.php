@@ -36,7 +36,7 @@ class EventController extends Controller
         if($xml_arr['MsgType'] == 'text' && $xml_arr['Content'] == '1111'){
             //$msg = '你好！';
             $media_id = 'fsLKqrkuSOIAblbNpi7lOa4vMKzIzB8G8EpLIkAB1vikzHgb_gNUN-NrlYUhVqb5';
-            echo "<xml><ToUserName><![CDATA[".$xml_arr['FormUserName']."]]></ToUserName><FromUserName><![CDATA[".$xml_arr['ToUserName']."]]></FromUserName><CreateTime>".time()."</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[".$media_id."]]></MediaId></Image></xml>";
+            echo "<xml><ToUserName><![CDATA[".$xml_arr['FromUserName']."]]></ToUserName><FromUserName><![CDATA[".$xml_arr['ToUserName']."]]></FromUserName><CreateTime>".time()."</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[".$media_id."]]></MediaId></Image></xml>";
             //echo "<xml><ToUserName><![CDATA[".$xml_arr['FromUserName']."]]></ToUserName><FromUserName><![CDATA[".$xml_arr['ToUserName']."]]></FromUserName><CreateTime>".time()."</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[".$msg."]]></Content></xml>";
         }
     }
