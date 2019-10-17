@@ -24,6 +24,7 @@ Route::get('/wechat/upload','ResourceController@upload');
 Route::post('/wechat/do_upload','ResourceController@do_upload');
 
 Route::get('/wechat/source_list','ResourceController@source_list');
+Route::get('/wechat/resource_list','ResourceController@resource_list');
 
 Route::any('/wechat/event','EventController@event');
 

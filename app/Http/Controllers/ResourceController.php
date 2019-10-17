@@ -20,6 +20,18 @@ class ResourceController extends Controller
         return view('Resource.upload');
     }
 
+    /**
+     * 资源列表
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function resource_list()
+    {
+        $req = $this->request->all();
+        !isset($req['type']) ? $type = 1 : $type = $req['type'];
+        $info = Resource::where(['type'=>$type])->paginate(10);
+        return view('Resource.resourceList',['info'=>$info,'type'=>$type]);
+    }
+
     public function source_list()
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token='.$this->tools->get_access_token();
