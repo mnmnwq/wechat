@@ -20,11 +20,15 @@ Route::get('/login',function(){
     return view('login');
 });
 
+Route::get('/wechat/menu_list','MenuController@menu_list');
+
+
 Route::get('/wechat/upload','ResourceController@upload');
 Route::post('/wechat/do_upload','ResourceController@do_upload');
 
 Route::get('/wechat/source_list','ResourceController@source_list');
 Route::get('/wechat/resource_list','ResourceController@resource_list');
+Route::get('/wechat/download','ResourceController@download');
 
 Route::any('/wechat/event','EventController@event');
 

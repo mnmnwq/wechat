@@ -24,7 +24,7 @@
                     <td>{{$v->media_id}}</td>
                     <td>{{$v->path}}</td>
                     <td>{{date('Y-m-d H:i:s',$v->addtime)}}</td>
-                    <td></td>
+                    <td><a href="{{url('/wechat/download')}}?media_id={{$v->media_id}}&type={{$type}}">下载资源</a></td>
                 </tr>
                 @endforeach
             </table>

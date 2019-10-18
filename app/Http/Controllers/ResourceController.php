@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Tools\Tools;
 use App\Model\Resource;
+use Illuminate\Support\Facades\Storage;
 
 class ResourceController extends Controller
 {
@@ -18,6 +19,27 @@ class ResourceController extends Controller
     public function upload()
     {
         return view('Resource.upload');
+    }
+
+    public function download()
+    {
+        $req = $this->request->all();
+        $url = 'https://api.weixin.qq.com/cgi-bin/material/get_material?access_token='.$this->tools->get_access_token();
+        $re = $this->tools->curl_post($url,json_encode(['media_id'=>$req['media_id']]));
+        $result = json_decode($re,1);
+        //设置超时参数
+        $opts=array(
+            "http"=>array(
+                "method"=>"GET",
+                "timeout"=>3  //单位秒
+            ),
+        );
+        //创建数据流上下文
+        $context = stream_context_create($opts);
+        //创建数据流上下文
+        $file_source = file_get_contents($result['down_url'],false, $context);
+
+        Storage::put('/wechat/video/22223332.mp4', $file_source);
     }
 
     /**
@@ -61,10 +83,7 @@ class ResourceController extends Controller
             'media'=>new \CURLFile(storage_path('app/public/'.$path)),
         ];
         if($req['type'] == 'video'){
-            $data['description'] = [
-                'title'=>'标题',
-                'introduction'=>'描述'
-            ];
+            $data['description'] = json_encode(['title'=>'标题', 'introduction'=>'描述'],JSON_UNESCAPED_UNICODE);
         }
         $re = $this->tools->wechat_curl_file($url,$data);
         $result = json_decode($re,1);
