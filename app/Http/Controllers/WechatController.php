@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Resource;
+use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Tools\Tools;
+use Illuminate\Support\Facades\Storage;
 
 class WechatController extends Controller
 {
@@ -12,6 +15,38 @@ class WechatController extends Controller
     public function __construct(Tools $tools)
     {
         $this->tools = $tools;
+    }
+
+    public function wechat_list()
+    {
+        $user_info = User::get();
+        return view('Wechat.wechatList',['user_info'=>$user_info]);
+    }
+
+    public function create_qrcode(Request $request)
+    {
+        $req = $request->all();
+        $url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$this->tools->get_access_token();
+        //{"expire_seconds": 604800, "action_name": "QR_SCENE", "action_info": {"scene": {"scene_id": 123}}}
+        $data = [
+            'expire_seconds'=> 30 * 24 * 3600,
+            'action_name'=>'QR_SCENE',
+            'action_info'=>[
+                'scene'=>[
+                    'scene_id'=>$req['uid']
+                ]
+            ]
+        ];
+        $re = $this->tools->curl_post($url,json_encode($data));
+        $result = json_decode($re,1);
+        $qrcode_url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$result['ticket'];
+        $qrcode_source = $this->tools->curl_get($qrcode_url);
+        $qrcode_name = $req['uid'].rand(10000,99999).'.jpg';
+        Storage::put('wechat/qrcode/'.$qrcode_name, $qrcode_source);
+        User::where(['id'=>$req['uid']])->update([
+            'qrcode_url'=>'/storage/wechat/qrcode/'.$qrcode_name
+        ]);
+        return redirect('/wechat/wechat_list');
     }
 
     public function push_template_msg()
