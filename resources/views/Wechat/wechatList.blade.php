@@ -1,10 +1,11 @@
 <html>
     <head>
         <title></title>
+        <link rel="stylesheet" href="{{asset('/css/app.css')}}">
     </head>
     <body>
         <center>
-            <table border="1">
+            <table class="table">
                 <tr>
                     <td>用户名</td>
                     <td>二维码图片</td>

@@ -22,6 +22,7 @@ Route::get('/login',function(){
 
 Route::get('/wechat/wechat_list','WechatController@wechat_list');
 Route::get('wechat/create_qrcode','WechatController@create_qrcode');
+Route::get('wechat/get_location','WechatController@get_location');
 
 Route::get('/wechat/menu_list','MenuController@menu_list'); //菜单列表
 Route::post('/wechat/create_menu','MenuController@create_menu'); //菜单

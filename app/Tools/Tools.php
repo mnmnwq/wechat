@@ -55,6 +55,26 @@ class Tools {
     }
 
     /**
+     * 获取微信jsapi_ticket
+     */
+    public function get_jsapi_ticket()
+    {
+        $key = 'wechat_jsapi_ticket';
+        //判断缓存是否存在
+        if(Cache::has($key)) {
+            //取缓存
+            $wechat_jsapi_ticket = Cache::get($key);
+        }else{
+            //取不到，调接口，缓存
+            $re = file_get_contents('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$this->get_access_token().'&type=jsapi');
+            $result = json_decode($re,true);
+            Cache::put($key,$result['ticket'],$result['expires_in']);
+            $wechat_jsapi_ticket = $result['ticket'];
+        }
+        return $wechat_jsapi_ticket;
+    }
+
+    /**
      * 微信上传素材专用
      * post
      * @param $url
