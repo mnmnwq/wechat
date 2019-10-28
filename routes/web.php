@@ -20,6 +20,8 @@ Route::get('/login',function(){
     return view('login');
 });
 
+Route::get('/wechat/youjia','WechatController@youjia');
+
 Route::get('/wechat/wechat_list','WechatController@wechat_list');
 Route::get('wechat/create_qrcode','WechatController@create_qrcode');
 Route::get('wechat/get_location','WechatController@get_location');
