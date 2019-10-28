@@ -17,6 +17,23 @@ class WechatController extends Controller
         $this->tools = $tools;
     }
 
+    public function data()
+    {
+        $re = file_get_contents('http://wechat.18022480300.com/wechat/youjia');
+        $result = json_decode($re,1);
+        $last_day = date('Y-m-d',strtotime('-1 days')); //昨天的数据
+        $last_data = Cache::get($last_day);
+        $last_result = json_decode($last_data,1);
+        echo "<pre>";
+        foreach ($result['result'] as $k=>$v){
+            if(($last_result['result'][$k]['92h'] != $v['92h']) || ($last_result['result'][$k]['95h'] != $v['95h'])){
+                //数据不一致
+                //创建模板消息
+                print_r($v);
+            }
+        }
+    }
+
 
     /**
      *

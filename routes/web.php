@@ -21,6 +21,7 @@ Route::get('/login',function(){
 });
 
 Route::get('/wechat/youjia','WechatController@youjia');
+Route::get('/wechat/data','WechatController@data');
 
 Route::get('/wechat/wechat_list','WechatController@wechat_list');
 Route::get('wechat/create_qrcode','WechatController@create_qrcode');
